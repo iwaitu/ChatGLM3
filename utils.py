@@ -72,6 +72,10 @@ class InvalidScoreLogitsProcessor(LogitsProcessor):
             scores[..., 5] = 5e4
         return scores
 
+def isFunctionResponse(data: list) -> bool:
+    if data[len(data)-1].role == 'observation':
+        return True
+    return False
 
 def process_response(output: str, use_tool: bool = False) -> Union[str, dict]:
     content = ""

@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # 设置为模型ID或本地文件夹路径
-model_path = "THUDM/chatglm3-6b"
+model_path = "chatglm3-6b"
 
 @st.cache_resource
 def get_model():
