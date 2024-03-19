@@ -1,0 +1,196 @@
+[
+    {
+        "Name": "project-api",
+        "Description": "业务办理api",
+        "Link": "https://bible-api.com/",
+        "Category": "业务",
+        "Introduction": "可以查询相关的法律法规,查询业务进度",
+        "Functions": "1. Name: getVerse\nDescription: Retrieve the text of a specific verse from the Bible.\nInput: {book: Required. String. The name of the book. chapter: Required. Integer. The chapter number. verse: Required. Integer. The verse number.}\nOutput: Returns a JSON object containing the text of the requested verse.\n\n2. Name: search\nDescription: Search the Bible for specific keywords or phrases.\nInput: {query: Required. String. The keyword or phrase to search for. version: Optional. String. The Bible version to search in.}\nOutput: Returns a JSON object containing an array of search results, each containing the book, chapter, and verse where the keyword or phrase was found, as well as the text of the verse.\n\n3. Name: getVersions\nDescription: Retrieve metadata for specific Bible versions.\nInput: {language: Optional. String. The language of the Bible version. publisher: Optional. String. The publisher of the Bible version.}\nOutput: Returns a JSON object containing an array of Bible versions that match the specified criteria, each containing the name of the version, the language used, the publication date, and the publisher.",
+        "Documentation": "{\"openapi\": \"3.0.0\", \"info\": {\"title\": \"Bible-api\", \"version\": \"1.0.0\", \"description\": \"Free Bible API with multiple languages\"}, \"paths\": {\"/getVerse\": {\"get\": {\"operationId\": \"getVerse\", \"description\": \"Retrieve the text of a specific verse from the Bible.\", \"parameters\": [{\"name\": \"book\", \"in\": \"query\", \"description\": \"The name of the book.\", \"required\": true, \"schema\": {\"type\": \"string\"}}, {\"name\": \"chapter\", \"in\": \"query\", \"description\": \"The chapter number.\", \"required\": true, \"schema\": {\"type\": \"integer\"}}, {\"name\": \"verse\", \"in\": \"query\", \"description\": \"The verse number.\", \"required\": true, \"schema\": {\"type\": \"integer\"}}], \"responses\": {\"200\": {\"description\": \"Returns a JSON object containing the text of the requested verse.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"text\": {\"type\": \"string\"}}}}}}}}}, \"/search\": {\"get\": {\"operationId\": \"search\", \"description\": \"Search the Bible for specific keywords or phrases.\", \"parameters\": [{\"name\": \"query\", \"in\": \"query\", \"description\": \"The keyword or phrase to search for.\", \"required\": true, \"schema\": {\"type\": \"string\"}}, {\"name\": \"version\", \"in\": \"query\", \"description\": \"The Bible version to search in.\", \"required\": false, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Returns a JSON object containing an array of search results, each containing the book, chapter, and verse where the keyword or phrase was found, as well as the text of the verse.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"book\": {\"type\": \"string\"}, \"chapter\": {\"type\": \"integer\"}, \"verse\": {\"type\": \"integer\"}, \"text\": {\"type\": \"string\"}}}}}}}}}}, \"/getVersions\": {\"get\": {\"operationId\": \"getVersions\", \"description\": \"Retrieve metadata for specific Bible versions.\", \"parameters\": [{\"name\": \"language\", \"in\": \"query\", \"description\": \"The language of the Bible version.\", \"required\": false, \"schema\": {\"type\": \"string\"}}, {\"name\": \"publisher\", \"in\": \"query\", \"description\": \"The publisher of the Bible version.\", \"required\": false, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Returns a JSON object containing an array of Bible versions that match the specified criteria, each containing the name of the version, the language used, the publication date, and the publisher.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"language\": {\"type\": \"string\"}, \"publication_date\": {\"type\": \"string\"}, \"publisher\": {\"type\": \"string\"}}}}}}}}}}}, \"servers\": [{\"url\": \"https://bible-api.com/\"}]}",
+        "NLDocumentation": "getVerse: Retrieve the text of a specific verse from the Bible.\nParameters: {\"book\": \"Required. string. The name of the book.\", \"chapter\": \"Required. integer. The chapter number.\", \"verse\": \"Required. integer. The verse number.\"}\nOutput: Returns a JSON object containing the text of the requested verse.\n - Format: application/json\n - Structure: Object{text}\nsearch: Search the Bible for specific keywords or phrases.\nParameters: {\"query\": \"Required. string. The keyword or phrase to search for.\", \"version\": \"string. The Bible version to search in.\"}\nOutput: Returns a JSON object containing an array of search results, each containing the book, chapter, and verse where the keyword or phrase was found, as well as the text of the verse.\n - Format: application/json\n - Structure: Array[Object{book, chapter, verse, text}]\ngetVersions: Retrieve metadata for specific Bible versions.\nParameters: {\"language\": \"string. The language of the Bible version.\", \"publisher\": \"string. The publisher of the Bible version.\"}\nOutput: Returns a JSON object containing an array of Bible versions that match the specified criteria, each containing the name of the version, the language used, the publication date, and the publisher.\n - Format: application/json\n - Structure: Array[Object{name, language, publication_date, publisher}]\n",
+        "Function_Description": {
+            "getVerse": "Retrieve the text of a specific verse from the Bible.\nParameters: {\"book\": \"Required. string. The name of the book.\", \"chapter\": \"Required. integer. The chapter number.\", \"verse\": \"Required. integer. The verse number.\"}\nOutput: Returns a JSON object containing the text of the requested verse.\n - Format: application/json\n - Structure: Object{text}",
+            "search": "Search the Bible for specific keywords or phrases.\nParameters: {\"query\": \"Required. string. The keyword or phrase to search for.\", \"version\": \"string. The Bible version to search in.\"}\nOutput: Returns a JSON object containing an array of search results, each containing the book, chapter, and verse where the keyword or phrase was found, as well as the text of the verse.\n - Format: application/json\n - Structure: Array[Object{book, chapter, verse, text}]",
+            "getVersions": "Retrieve metadata for specific Bible versions.\nParameters: {\"language\": \"string. The language of the Bible version.\", \"publisher\": \"string. The publisher of the Bible version.\"}\nOutput: Returns a JSON object containing an array of Bible versions that match the specified criteria, each containing the name of the version, the language used, the publication date, and the publisher.\n - Format: application/json\n - Structure: Array[Object{name, language, publication_date, publisher}]",
+            "components": ""
+        },
+        "Function_Projection": {
+            "getVerse": [
+                "/getVerse",
+                "get"
+            ],
+            "search": [
+                "/search",
+                "get"
+            ],
+            "getVersions": [
+                "/getVersions",
+                "get"
+            ]
+        },
+        "Instructions": [
+            "Can you help me find a specific verse in the Bible? I need the text from John chapter 3 verse 16.",
+            "Hey, can you search the Bible for the phrase \"love your neighbor\"? Please include the book, chapter, and verse where it's found.",
+            "I want to find all the available Bible versions in Spanish. Can you help me with that?",
+            "I'm looking for a specific Bible version published by Zondervan. Can you give me the details of all available versions?",
+            "Can you get me the text of Genesis chapter 1 verse 1? I need it for a project.",
+            "Hey, can you search the Bible for the keyword \"grace\"? Please include the book, chapter, and verse where it's found.",
+            "I need to find all the available Bible versions in French. Can you help me with that?",
+            "Can you give me the details of all the Bible versions published by Thomas Nelson?",
+            "I want to find a Bible version in Portuguese. Can you give me the details of all available versions?",
+            "Hey, can you search the Bible for the phrase \"do not fear\"? Please include the book, chapter, and verse where it's found."
+        ],
+        "Instances": [
+            {
+                "input": "Can you help me find a specific verse in the Bible? I need the text from John chapter 3 verse 16.",
+                "output": "The text of John 3:16 is \"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.\"",
+                "Final Thought": "The getVerse tool successfully retrieved the text of the requested verse.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVerse",
+                            "{\"book\": \"John\", \"chapter\": 3, \"verse\": 16}",
+                            " I can use the getVerse tool to retrieve the text of the requested verse.\nAction: getVerse\nAction Input: {\"book\": \"John\", \"chapter\": 3, \"verse\": 16}"
+                        ],
+                        "Status Code: 200. Response: {\"text\":\"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.\"}"
+                    ]
+                ]
+            },
+            {
+                "input": "Hey, can you search the Bible for the phrase \"love your neighbor\"? Please include the book, chapter, and verse where it's found.",
+                "output": "The phrase \"love your neighbor\" can be found in Mark 12:31, Matthew 22:39, and Luke 10:27 in the King James Version of the Bible.",
+                "Final Thought": "The search tool returned three results, all from the King James Version of the Bible.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "search",
+                            "{\"query\": \"love your neighbor\", \"version\": \"King James Version\"}",
+                            " I need to use the search tool to find the phrase in the Bible.\nAction: search\nAction Input: {\"query\": \"love your neighbor\", \"version\": \"King James Version\"}"
+                        ],
+                        "Status Code: 200. Response: {\"search_results\":[{\"book\":\"Mark\",\"chapter\":12,\"verse\":31,\"text\":\"And the second is like, namely this, Thou shalt love thy neighbour as thyself. There is none other commandment greater than these.\"},{\"book\":\"Matthew\",\"chapter\":22,\"verse\":39,\"text\":\"And the second is like unto it, Thou shalt love thy neighbour as thyself.\"},{\"book\":\"Luke\",\"chapter\":10,\"verse\":27,\"text\":\"And he answering said, Thou shalt love the Lord thy God with all thy heart, and with all thy soul, and with all thy strength, and with all thy mind; and thy neighbour as thyself.\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "I want to find all the available Bible versions in Spanish. Can you help me with that?",
+                "output": "There are three Bible versions available in Spanish: Reina-Valera Antigua (published in 1602 by Public Domain), Reina-Valera 1960 (published in 1960 by American Bible Society), and Nueva Versión Internacional (published in 1999 by Vida Publishers).",
+                "Final Thought": "The getVersions tool returned three Bible versions in Spanish.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVersions",
+                            "{\"language\": \"Spanish\"}",
+                            " I need to use the getVersions tool to find the Bible versions in Spanish.\nAction: getVersions\nAction Input: {\"language\": \"Spanish\"}"
+                        ],
+                        "Status Code: 200. Response: {\"versions\":[{\"name\":\"Reina-Valera Antigua\",\"language\":\"Spanish\",\"publication_date\":\"1602\",\"publisher\":\"Public Domain\"},{\"name\":\"Reina-Valera 1960\",\"language\":\"Spanish\",\"publication_date\":\"1960\",\"publisher\":\"American Bible Society\"},{\"name\":\"Nueva Versión Internacional\",\"language\":\"Spanish\",\"publication_date\":\"1999\",\"publisher\":\"Vida Publishers\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "I'm looking for a specific Bible version published by Zondervan. Can you give me the details of all available versions?",
+                "output": "The Bible versions published by Zondervan are the New American Standard Bible (1971), the Amplified Bible (1965), and the King James Version (1611).",
+                "Final Thought": "The getVersions tool returned three Bible versions published by Zondervan.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVersions",
+                            "{\"language\": \"\", \"publisher\": \"Zondervan\"}",
+                            " I need to use the getVersions tool to search for Bible versions published by Zondervan.\nAction: getVersions\nAction Input: {\"language\": \"\", \"publisher\": \"Zondervan\"}"
+                        ],
+                        "Status Code: 200. Response: {\"versions\":[{\"name\":\"New American Standard Bible\",\"language\":\"English\",\"publication_date\":\"1971-01-01\",\"publisher\":\"Zondervan\"},{\"name\":\"Amplified Bible\",\"language\":\"English\",\"publication_date\":\"1965-01-01\",\"publisher\":\"Zondervan\"},{\"name\":\"King James Version\",\"language\":\"English\",\"publication_date\":\"1611-01-01\",\"publisher\":\"Zondervan\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "Can you get me the text of Genesis chapter 1 verse 1? I need it for a project.",
+                "output": "The text of Genesis chapter 1 verse 1 is \"In the beginning God created the heaven and the earth.\"",
+                "Final Thought": "The text of Genesis chapter 1 verse 1 is \"In the beginning God created the heaven and the earth.\"",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVerse",
+                            "{\"book\": \"Genesis\", \"chapter\": 1, \"verse\": 1}",
+                            " I need to use the getVerse tool to get the text of the verse.\nAction: getVerse\nAction Input: {\"book\": \"Genesis\", \"chapter\": 1, \"verse\": 1}"
+                        ],
+                        "Status Code: 200. Response: {\"text\":\"In the beginning God created the heaven and the earth.\"}"
+                    ]
+                ]
+            },
+            {
+                "input": "Hey, can you search the Bible for the keyword \"grace\"? Please include the book, chapter, and verse where it's found.",
+                "output": "The keyword \"grace\" appears three times in the Bible, in Romans 3:24, Ephesians 2:8, and Hebrews 4:16. The full text of each verse is as follows: Romans 3:24: \"And all are justified freely by his grace through the redemption that came by Christ Jesus.\", Ephesians 2:8: \"For it is by grace you have been saved, through faith—and this is not from yourselves, it is the gift of God—\", and Hebrews 4:16: \"Let us then approach God’s throne of grace with confidence, so that we may receive mercy and find grace to help us in our time of need.\"",
+                "Final Thought": "The search tool returned three results, all from the book of Romans, Ephesians, and Hebrews.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "search",
+                            "{\"query\": \"grace\"}",
+                            " I need to use the search tool to find the keyword \"grace\" in the Bible.\nAction: search\nAction Input: {\"query\": \"grace\"}"
+                        ],
+                        "Status Code: 200. Response: {\"results\":[{\"book\":\"Romans\",\"chapter\":3,\"verse\":24,\"text\":\"And all are justified freely by his grace through the redemption that came by Christ Jesus.\"},{\"book\":\"Ephesians\",\"chapter\":2,\"verse\":8,\"text\":\"For it is by grace you have been saved, through faith—and this is not from yourselves, it is the gift of God—\"},{\"book\":\"Hebrews\",\"chapter\":4,\"verse\":16,\"text\":\"Let us then approach God’s throne of grace with confidence, so that we may receive mercy and find grace to help us in our time of need.\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "I need to find all the available Bible versions in French. Can you help me with that?",
+                "output": "There are three Bible versions available in French: La Bible du Semeur, Bible Segond 21, and Bible en français courant.",
+                "Final Thought": "I have found three Bible versions in French.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVersions",
+                            "{\"language\": \"French\"}",
+                            " I need to use the getVersions tool to find the Bible versions in French.\nAction: getVersions\nAction Input: {\"language\": \"French\"}"
+                        ],
+                        "Status Code: 200. Response: {\"versions\":[{\"name\":\"La Bible du Semeur\",\"language\":\"French\",\"publication_date\":\"1992-01-01\",\"publisher\":\"Société Biblique Internationale\"},{\"name\":\"Bible Segond 21\",\"language\":\"French\",\"publication_date\":\"2007-01-01\",\"publisher\":\"Société Biblique de Genève\"},{\"name\":\"Bible en français courant\",\"language\":\"French\",\"publication_date\":\"1982-01-01\",\"publisher\":\"Alliance Biblique Universelle\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "Can you give me the details of all the Bible versions published by Thomas Nelson?",
+                "output": "The Bible versions published by Thomas Nelson are the New King James Version (published in 1982) and the King James Version (published in 1611).",
+                "Final Thought": "The getVersions tool returned two Bible versions published by Thomas Nelson: the New King James Version and the King James Version.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVersions",
+                            "{\"language\": \"\", \"publisher\": \"Thomas Nelson\"}",
+                            " I need to use the getVersions tool to get the details of the Bible versions published by Thomas Nelson.\nAction: getVersions\nAction Input: {\"language\": \"\", \"publisher\": \"Thomas Nelson\"}"
+                        ],
+                        "Status Code: 200. Response: {\"versions\":[{\"name\":\"New King James Version\",\"language\":\"English\",\"publication_date\":\"1982-01-07\",\"publisher\":\"Thomas Nelson\"},{\"name\":\"King James Version\",\"language\":\"English\",\"publication_date\":\"1611-05-02\",\"publisher\":\"Thomas Nelson\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "I want to find a Bible version in Portuguese. Can you give me the details of all available versions?",
+                "output": "There is one version of the Bible available in Portuguese, the Nova Versão Internacional, published by Editora Vida in 1988.",
+                "Final Thought": "The response contains one version of the Bible in Portuguese, the Nova Versão Internacional, published by Editora Vida in 1988.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "getVersions",
+                            "{\"language\": \"Portuguese\"}",
+                            " I need to use the getVersions tool to find the Bible versions in Portuguese.\nAction: getVersions\nAction Input: {\"language\": \"Portuguese\"}"
+                        ],
+                        "Status Code: 200. Response: {\"versions\":[{\"name\":\"Nova Versão Internacional\",\"language\":\"Portuguese\",\"publication_date\":\"1988-01-01\",\"publisher\":\"Editora Vida\"}]}"
+                    ]
+                ]
+            },
+            {
+                "input": "Hey, can you search the Bible for the phrase \"do not fear\"? Please include the book, chapter, and verse where it's found.",
+                "output": "The phrase \"do not fear\" appears three times in the Bible, all in the book of Isaiah. The first instance is in Isaiah 41:10, which reads \"Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.\" The second instance is in Isaiah 41:13, which reads \"For I the LORD thy God will hold thy right hand, saying unto thee, Fear not; I will help thee.\" The third instance is in Isaiah 44:8, which reads \"Fear ye not, neither be afraid: have not I told thee from that time, and have declared it? ye are even my witnesses. Is there a God beside me? yea, there is no God; I know not any.\"",
+                "Final Thought": "The search tool returned three results, all from the book of Isaiah.",
+                "intermediate_steps": [
+                    [
+                        [
+                            "search",
+                            "{\"query\": \"do not fear\", \"version\": \"King James Version\"}",
+                            " I need to use the search tool to find the phrase in the Bible.\nAction: search\nAction Input: {\"query\": \"do not fear\", \"version\": \"King James Version\"}"
+                        ],
+                        "Status Code: 200. Response: {\"results\":[{\"book\":\"Isaiah\",\"chapter\":41,\"verse\":10,\"text\":\"Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.\"},{\"book\":\"Isaiah\",\"chapter\":41,\"verse\":13,\"text\":\"For I the LORD thy God will hold thy right hand, saying unto thee, Fear not; I will help thee.\"},{\"book\":\"Isaiah\",\"chapter\":44,\"verse\":8,\"text\":\"Fear ye not, neither be afraid: have not I told thee from that time, and have declared it? ye are even my witnesses. Is there a God beside me? yea, there is no God; I know not any.\"}]}"
+                    ]
+                ]
+            }
+        ]
+    }
+]

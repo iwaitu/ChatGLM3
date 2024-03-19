@@ -12,7 +12,7 @@ SAVE_INTERVAL=50
 
 DATESTR=`date +%Y%m%d-%H%M%S`
 RUN_NAME=tool_alpaca_ft
-DATASET_PATH=formatted_data/tool_alpaca.jsonl
+DATASET_PATH=formatted_data/train_cn_data.jsonl
 
 BASE_MODEL_PATH=THUDM/chatglm3-6b
 OUTPUT_DIR=output/${RUN_NAME}-${DATESTR}-${LR}

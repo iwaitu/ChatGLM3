@@ -73,12 +73,18 @@ class InvalidScoreLogitsProcessor(LogitsProcessor):
         return scores
 
 def isFunctionResponse(data: list) -> bool:
-    if data[len(data)-1].role == 'observation':
+    # if data[len(data)-1].role == 'observation':
+    #     return True
+    # return Fale
+    if data[len(data)-1].role == 'function':
         return True
     return False
 
 def process_response(output: str, use_tool: bool = False) -> Union[str, dict]:
     content = ""
+    if output.startswith("\n"):
+        output = output[1:]
+        
     for response in output.split("<|assistant|>"):
         metadata, content = response.split("\n", maxsplit=1)
         if not metadata.strip():

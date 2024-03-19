@@ -7,7 +7,7 @@
 import time
 from contextlib import asynccontextmanager
 from typing import List, Literal, Optional, Union
-
+import os
 import torch
 import uvicorn
 from fastapi import FastAPI, HTTPException
@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 from pydantic import BaseModel, Field
 from sse_starlette.sse import EventSourceResponse
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel,AutoConfig
 
 from utils import process_response, generate_chatglm3, generate_stream_chatglm3,isFunctionResponse
 
@@ -129,7 +129,7 @@ async def create_chat_completion(request: ChatCompletionRequest):
         messages=request.messages,
         temperature=request.temperature,
         top_p=request.top_p,
-        max_tokens=request.max_tokens or 4096,
+        max_tokens=request.max_tokens or 8192,
         max_length=request.max_length,
         echo=False,
         stream=request.stream,
@@ -148,6 +148,7 @@ async def create_chat_completion(request: ChatCompletionRequest):
 
     function_call, finish_reason = None, "stop"
     if request.functions:
+        print("no stream function_call")
         try:
             function_call = process_response(response["text"], use_tool=True)
         except:
@@ -191,17 +192,20 @@ async def predict(model_id: str, params: dict):
     yield "{}".format(chunk.json(exclude_unset=True))
 
     previous_text = ""
+    
+
     for new_response in generate_stream_chatglm3(model, tokenizer, params):
         decoded_unicode = new_response["text"]
         delta_text = decoded_unicode[len(previous_text):]
         previous_text = decoded_unicode
 
         finish_reason = new_response["finish_reason"]
-        if len(delta_text) == 0 and finish_reason != "function_call":
-            continue
+        if finish_reason == "stop" :
+            break
 
         function_call = None
         if finish_reason == "function_call":
+            print(f"stream function_call {decoded_unicode}")
             try:
                 function_call_data = process_response(decoded_unicode, use_tool=True)
                 if function_call_data:
@@ -227,12 +231,12 @@ async def predict(model_id: str, params: dict):
                     yield '[DONE]'
                     return
             except:
-                print("Failed to parse tool call")
+                print(f"Failed to parse tool call: ")
 
         delta = DeltaMessage(
                 content=delta_text,
                 role="assistant",
-                function_call=function_call if isFunctionResponse(params['messages']) else None,
+                function_call=function_call ,
             )
         choice_data = ChatCompletionResponseStreamChoice(
             index=0,
@@ -254,7 +258,17 @@ async def predict(model_id: str, params: dict):
 
 if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained("chatglm3-6b", trust_remote_code=True)
-    model = AutoModel.from_pretrained("chatglm3-6b", trust_remote_code=True).cuda()
+    config = AutoConfig.from_pretrained("chatglm3-6b", trust_remote_code=True, pre_seq_len=128)
+    model = AutoModel.from_pretrained("chatglm3-6b", trust_remote_code=True)
+    # model = AutoModel.from_pretrained("chatglm3-6b", trust_remote_code=True,config=config)
+    # prefix_state_dict = torch.load(os.path.join("ptoutput", "pytorch_model.bin"))
+    # new_prefix_state_dict = {}
+    # for k, v in prefix_state_dict.items():
+    #     if k.startswith("transformer.prefix_encoder."):
+    #         new_prefix_state_dict[k[len("transformer.prefix_encoder."):]] = v
+    # print("Loaded from pt checkpoints", new_prefix_state_dict.keys())
+    # model.transformer.prefix_encoder.load_state_dict(new_prefix_state_dict)
+    model = model.cuda()
     # 多显卡支持，使用下面两行代替上面一行，将num_gpus改为你实际的显卡数量
     # from utils import load_model_on_gpus
     # model = load_model_on_gpus("THUDM/chatglm3-6b", num_gpus=2)

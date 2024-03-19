@@ -1,23 +1,32 @@
 import json
 
-import openai
+
 from colorama import init, Fore
 from loguru import logger
 
 from tool_register import get_tools, dispatch_tool
 
 init(autoreset=True)
-openai.api_base = "http://192.168.20.59:7891/v1"
+
+import openai
+
+# 如果您需要设置自定义的 base URL，可以使用下面的方式：
+openai.base_url  = "http://127.0.0.1:8000/v1/"
+# 设置 API 密钥
 openai.api_key = "xxx"
+
+openai.api_version = "v1"
+
+
 
 functions = get_tools()
 
 
 def run_conversation(query: str, stream=False, functions=None, max_retry=5):
     params = dict(model="chatglm3", messages=[{"role": "user", "content": query}], stream=stream)
-    if functions:
-        params["functions"] = functions
-    response = openai.ChatCompletion.create(**params)
+    # if functions:
+    #     params["functions"] = functions
+    response = openai.chat.completions.create(**params)
 
     for _ in range(max_retry):
         if not stream:

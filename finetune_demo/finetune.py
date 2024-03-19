@@ -17,7 +17,7 @@
 Fine-tuning the library models for sequence to sequence.
 """
 # You can also adapt this script on your own sequence to sequence task. Pointers for this are left as comments.
-# Adapted from 
+# Adapted from
 
 
 import logging
@@ -43,12 +43,15 @@ from preprocess_utils import sanity_check, MultiTurnDataset, InputOutputDataset
 
 logger = logging.getLogger(__name__)
 
+
 def main():
-    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments))
+    parser = HfArgumentParser(
+        (ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script and it's the path to a json file,
         # let's parse it to get our arguments.
-        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
+        model_args, data_args, training_args = parser.parse_json_file(
+            json_file=os.path.abspath(sys.argv[1]))
     else:
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
@@ -81,22 +84,28 @@ def main():
     set_seed(training_args.seed)
 
     # Load pretrained model and tokenizer
-    config = AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
+    config = AutoConfig.from_pretrained(
+        model_args.model_name_or_path, trust_remote_code=True)
     config.pre_seq_len = model_args.pre_seq_len
     config.prefix_projection = model_args.prefix_projection
 
-    tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_args.model_name_or_path, trust_remote_code=True)
 
     if model_args.ptuning_checkpoint is not None:
-        model = AutoModel.from_pretrained(model_args.model_name_or_path, config=config, trust_remote_code=True)
-        prefix_state_dict = torch.load(os.path.join(model_args.ptuning_checkpoint, "pytorch_model.bin"))
+        model = AutoModel.from_pretrained(
+            model_args.model_name_or_path, config=config, trust_remote_code=True)
+        prefix_state_dict = torch.load(os.path.join(
+            model_args.ptuning_checkpoint, "pytorch_model.bin"))
         new_prefix_state_dict = {}
         for k, v in prefix_state_dict.items():
             if k.startswith("transformer.prefix_encoder."):
-                new_prefix_state_dict[k[len("transformer.prefix_encoder."):]] = v
+                new_prefix_state_dict[k[len(
+                    "transformer.prefix_encoder."):]] = v
         model.transformer.prefix_encoder.load_state_dict(new_prefix_state_dict)
     else:
-        model = AutoModel.from_pretrained(model_args.model_name_or_path, config=config, trust_remote_code=True)
+        model = AutoModel.from_pretrained(
+            model_args.model_name_or_path, config=config, trust_remote_code=True)
 
     if model_args.quantization_bit is not None:
         print(f"Quantized to {model_args.quantization_bit} bit")
@@ -108,7 +117,7 @@ def main():
     else:
         # Finetune
         model = model.float()
-    
+
     with open(data_args.train_file, "r", encoding="utf-8") as f:
         if data_args.train_file.endswith(".json"):
             train_data = json.load(f)
@@ -131,7 +140,8 @@ def main():
     else:
         raise ValueError(f"Unknown train format: {data_args.train_format}")
     if training_args.local_rank < 1:
-        sanity_check(train_dataset[0]['input_ids'], train_dataset[0]['labels'], tokenizer)
+        sanity_check(train_dataset[0]['input_ids'],
+                     train_dataset[0]['labels'], tokenizer)
 
     # Data collator
     data_collator = DataCollatorForSeq2Seq(
@@ -160,6 +170,7 @@ def main():
     trainer.train(resume_from_checkpoint=checkpoint)
     trainer.save_model()  # Saves the tokenizer too for easy upload
     trainer.save_state()
+
 
 if __name__ == "__main__":
     main()
